@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /sala-k7q2/
+Disallow: /sala-m4x9/

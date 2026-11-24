@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sala de Arquivos · Arquivo Confidencial</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%23c0281f%22/%3E%3Ctext x=%2250%22 y=%2270%22 font-size=%2262%22 text-anchor=%22middle%22%3E%F0%9F%94%8E%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime:wght@400;700&family=Special+Elite&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--noite:#12100e;--noite-2:#1b1714;--noite-3:#241f1a;--papel:#efe6d2;--papel-claro:#fbf7ee;--tinta:#2a241d;--tinta-suave:#5c5145;--vermelho:#c0281f;--vermelho-2:#97201a;--dourado:#d1ab5f;--verde:#2f5d46;--linha:rgba(239,230,210,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,sans-serif;background:var(--noite);color:var(--papel);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;min-height:100vh;
+       background-image:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(209,171,95,.12),transparent 70%)}
+  a{color:inherit}
+  button{font-family:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  h1,h2,h3{font-family:"Bebas Neue",Impact,sans-serif;font-weight:400;line-height:1;letter-spacing:.02em}
+  .maq{font-family:"Courier Prime",monospace;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+
+  .topo{border-bottom:1px solid var(--linha);padding:16px 0}
+  .topo .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .topo .marca{font-size:14px;color:var(--papel)}
+  .topo .plano{font-size:12px;background:var(--noite-3);border:1px solid var(--linha);padding:6px 12px;border-radius:999px;color:var(--dourado)}
+
+  .boas{padding:46px 0 26px}
+  .boas .k{font-size:12px;color:var(--dourado)}
+  .boas h1{font-size:clamp(46px,8vw,78px);margin:10px 0 8px}
+  .boas p{color:#cfc4ad;max-width:620px}
+
+  /* Comece aqui */
+  .comece{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;background:var(--noite-2);border:1px solid var(--linha);border-radius:16px;padding:20px;margin-bottom:46px}
+  .video{aspect-ratio:16/9;border-radius:10px;background:#000;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(209,171,95,.4)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .video .ph{text-align:center;color:#a39880;font-size:14px}
+  .video .ph b{display:block;font-size:40px;color:var(--dourado)}
+  .passos-c h2{font-size:32px;margin-bottom:10px}
+  .passos-c ol{padding-left:20px;color:#d6ccb6}
+  .passos-c li{margin:6px 0}
+  .passos-c .regra{margin-top:12px;background:rgba(192,40,31,.14);border-left:3px solid var(--vermelho);padding:10px 12px;border-radius:0 8px 8px 0;font-size:15px}
+  .link-manual{display:inline-block;margin-top:12px;color:var(--dourado);font-weight:600}
+
+  .sec-t{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .sec-t h2{font-size:38px}
+  .sec-t span{font-size:13px;color:#a39880}
+
+  /* Pastas */
+  .pastas{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-bottom:54px}
+  .caso{display:flex;flex-direction:column;gap:10px}
+  .pasta{position:relative;aspect-ratio:5/4;cursor:pointer;border:0;background:none;padding:0;text-align:left;display:block;width:100%;perspective:800px}
+  .pasta .fundo{position:absolute;inset:12% 0 0 0;border-radius:4px 8px 8px 8px;background:var(--cor,#b88d51);box-shadow:0 18px 30px -16px rgba(0,0,0,.9)}
+  .pasta .fundo::before{content:"";position:absolute;top:-14%;left:0;width:42%;height:16%;background:var(--cor,#b88d51);border-radius:6px 6px 0 0}
+  .pasta .folhas{position:absolute;left:8%;right:8%;top:6%;bottom:12%;background:var(--papel-claro);border-radius:3px;transition:transform .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 0 #d9ccb0}
+  .pasta .folhas::before,.pasta .folhas::after{content:"";position:absolute;left:10%;right:30%;height:5px;background:#ddd0b4;border-radius:3px;top:16%}
+  .pasta .folhas::after{top:30%;right:15%}
+  .pasta .frente{position:absolute;inset:26% 0 0 0;border-radius:6px;background:linear-gradient(170deg,rgba(255,255,255,.18),rgba(0,0,0,.12)),var(--cor,#b88d51);transform-origin:bottom;transition:transform .35s cubic-bezier(.2,.8,.2,1);padding:12px 14px;display:flex;flex-direction:column;justify-content:flex-end;color:var(--tinta)}
+  .pasta:hover .folhas,.pasta:focus-visible .folhas{transform:translateY(-12%)}
+  .pasta:hover .frente,.pasta:focus-visible .frente{transform:rotateX(18deg)}
+  .pasta .etq{background:var(--papel);padding:6px 8px;border-radius:3px;font-family:"Special Elite",monospace;font-size:12px;line-height:1.35;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+  .pasta .etq b{display:block;font-size:13px}
+  .pasta .carimbo{position:absolute;top:34%;right:8%;border:2px solid var(--vermelho);color:var(--vermelho);font-family:"Special Elite",monospace;font-size:10px;padding:2px 6px;transform:rotate(-10deg);letter-spacing:.1em}
+  .pasta.bloq{cursor:default;filter:grayscale(.85) brightness(.55)}
+  .pasta.bloq:hover .folhas,.pasta.bloq:hover .frente{transform:none}
+  .pasta .cadeado{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;z-index:3}
+  .caso h3{font-size:24px}
+  .caso .meta{font-size:12px;color:#a39880;margin-top:4px}
+  .bts{display:flex;flex-direction:column;gap:8px}
+  .bt{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:11px 12px;font-weight:700;font-size:14.5px;cursor:pointer;text-decoration:none;border:0;transition:transform .12s,background .15s}
+  .bt:active{transform:scale(.98)}
+  .bt.pr{background:var(--papel);color:var(--tinta)}
+  .bt.pr:hover{background:#fff}
+  .bt.sol{background:transparent;color:var(--papel);border:1.5px solid rgba(239,230,210,.3)}
+  .bt.sol:hover{border-color:var(--vermelho);background:rgba(192,40,31,.12)}
+  .bt.dis{opacity:.45;pointer-events:none}
+  .bt.resolvido{border-color:var(--verde);color:#9fd3b4}
+
+  /* Bônus */
+  .bonus{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:54px}
+  .bn{background:var(--noite-2);border:1px solid var(--linha);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}
+  .bn .ic{font-size:28px}
+  .bn h3{font-size:24px}
+  .bn p{font-size:14.5px;color:#bfb49c;flex:1}
+
+  /* Upgrade (só no plano de R$ 27) */
+  .upgrade{background:var(--papel);color:var(--tinta);border-radius:16px;padding:22px;display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:54px}
+  .upgrade h3{font-size:30px}
+  .upgrade p{color:var(--tinta-suave);font-size:15px}
+  .upgrade a{background:var(--vermelho);color:#fff;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:999px}
+
+  footer{border-top:1px solid var(--linha);padding:26px 0 40px;text-align:center;font-size:13px;color:#7d725f}
+
+  /* Modal da solução */
+  .modal{position:fixed;inset:0;background:rgba(8,7,6,.82);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+  .modal.on{display:flex}
+  .caixa{background:var(--papel-claro);color:var(--tinta);border-radius:16px;max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:26px;position:relative;animation:entra .3s ease}
+  @keyframes entra{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+  .fechar{position:absolute;top:10px;right:12px;background:none;border:0;font-size:26px;cursor:pointer;color:var(--tinta-suave)}
+  .caixa .k{font-size:12px;color:var(--vermelho)}
+  .caixa h3{font-size:36px;margin:6px 0 8px}
+  .caixa p.inst{color:var(--tinta-suave);font-size:15px;margin-bottom:14px}
+  .campo{display:flex;gap:8px}
+  .campo input{flex:1;font-size:17px;padding:13px 14px;border-radius:10px;border:2px solid #d9ccb0;background:#fff;font-family:"Special Elite",monospace;color:var(--tinta)}
+  .campo input:focus{outline:none;border-color:var(--tinta)}
+  .campo button{background:var(--tinta);color:var(--papel);border:0;border-radius:10px;padding:0 18px;font-weight:800;cursor:pointer}
+  .msg{margin-top:12px;font-size:15px;min-height:22px}
+  .msg.erro{color:var(--vermelho);font-weight:700}
+  .tremer{animation:treme .4s}
+  @keyframes treme{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
+  .solucao{margin-top:8px;border-top:2px dashed #d9ccb0;padding-top:16px;animation:entra .4s ease}
+  .solucao .selo{display:inline-block;border:3px solid var(--vermelho);color:var(--vermelho);font-family:"Special Elite",monospace;font-size:16px;padding:4px 12px;transform:rotate(-4deg);margin-bottom:12px}
+  .solucao p{margin:8px 0;font-size:15.5px}
+  .desisti{margin-top:14px;font-size:13px;color:var(--tinta-suave)}
+
+
+  /* ===== abertura "acesso autorizado" ===== */
+  .intro{position:fixed;inset:0;background:#0a0908;z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;transition:opacity .6s}
+  .intro.sai{opacity:0;pointer-events:none}
+  .intro .linha{font-family:"Courier Prime",monospace;color:#9fd3b4;font-size:clamp(14px,3.6vw,18px);letter-spacing:.12em;min-height:1.4em;text-align:center;padding:0 20px}
+  .intro .ok{font-family:"Bebas Neue",sans-serif;font-size:clamp(44px,11vw,90px);color:var(--papel);letter-spacing:.06em;opacity:0;transform:scale(1.4);transition:all .5s cubic-bezier(.2,.9,.3,1.2)}
+  .intro .ok.on{opacity:1;transform:none}
+  .intro .ok em{color:var(--vermelho);font-style:normal}
+  .intro .pular{position:absolute;bottom:24px;background:none;border:1px solid rgba(239,230,210,.25);color:#a39880;border-radius:999px;padding:8px 16px;cursor:pointer;font-size:13px}
+
+  /* explicação da área */
+  .tag-area{display:inline-flex;align-items:center;gap:8px;background:rgba(47,93,70,.25);border:1px solid rgba(159,211,180,.35);color:#9fd3b4;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+  .tag-area i{width:8px;height:8px;border-radius:50%;background:#5fd38d;box-shadow:0 0 8px #5fd38d;animation:vivo 1.6s ease-in-out infinite}
+  @keyframes vivo{50%{opacity:.3}}
+  .boas h1 .nome{color:var(--dourado)}
+
+  /* ===== mesa de hoje (quantos detetives) ===== */
+  .mesa-hoje{background:linear-gradient(135deg,var(--noite-2),var(--noite-3));border:1px solid var(--linha);border-radius:18px;padding:22px;margin-bottom:28px}
+  .mesa-hoje h2{font-size:34px;margin-bottom:4px}
+  .mesa-hoje .sub{color:#bfb49c;font-size:15px;margin-bottom:16px}
+  .linha-mesa{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:16px}
+  .qtd{display:flex;gap:8px;flex-wrap:wrap}
+  .qtd button{width:52px;height:52px;border-radius:14px;border:1.5px solid rgba(239,230,210,.2);background:rgba(239,230,210,.04);color:var(--papel);font-family:"Bebas Neue",sans-serif;font-size:28px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+  .qtd button small{font-family:Inter,sans-serif;font-size:9px;letter-spacing:.06em;color:#8f846f}
+  .qtd button:hover{border-color:var(--dourado);transform:translateY(-2px)}
+  .qtd button.on{background:var(--dourado);border-color:var(--dourado);color:var(--tinta)}
+  .qtd button.on small{color:var(--tinta)}
+  .nome-in{flex:1;min-width:200px;display:flex;gap:8px}
+  .nome-in input{flex:1;background:rgba(239,230,210,.06);border:1.5px solid rgba(239,230,210,.18);border-radius:12px;padding:13px 14px;color:var(--papel);font-family:"Courier Prime",monospace;font-size:16px}
+  .nome-in input:focus{outline:none;border-color:var(--dourado)}
+  .plano-mesa{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .pm{background:rgba(0,0,0,.25);border-radius:12px;padding:14px;border:1px solid var(--linha);animation:entra .35s ease}
+  .pm .ic{font-size:22px}
+  .pm b{display:block;font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:22px;letter-spacing:.03em;margin:4px 0 2px;color:var(--dourado)}
+  .pm p{font-size:14px;color:#d6ccb6}
+  .tranq{margin-top:12px;font-size:13.5px;color:#a39880}
+
+  /* progresso */
+  .progresso{display:flex;align-items:center;gap:12px;font-size:13px;color:#a39880}
+  .barra{width:140px;height:8px;border-radius:8px;background:rgba(239,230,210,.1);overflow:hidden}
+  .barra i{display:block;height:100%;background:linear-gradient(90deg,var(--verde),#5fd38d);width:0;transition:width .6s}
+
+  /* pastas entram uma a uma */
+  .caso{opacity:0;transform:translateY(18px);animation:chega .5s ease forwards}
+  @keyframes chega{to{opacity:1;transform:none}}
+  .pasta .frente .etq{font-family:"Courier Prime",monospace}
+  @media (max-width:820px){.plano-mesa{grid-template-columns:1fr}.qtd button{width:46px;height:46px}}
+  @media (prefers-reduced-motion:reduce){.caso{opacity:1;transform:none;animation:none}.intro{display:none}}
+
+  @media (max-width:900px){.pastas{grid-template-columns:repeat(2,1fr)}.comece{grid-template-columns:1fr}.bonus{grid-template-columns:1fr}}
+  @media (max-width:420px){.pastas{gap:14px}.caso h3{font-size:17px}.bt{font-size:13.5px;padding:10px 8px}}
+  /* porta de entrada: cena de delegacia */
+  .porta{position:fixed;inset:0;z-index:120;background:radial-gradient(circle at 50% 25%,#3a2a1c,#0a0908 70%);display:flex;align-items:center;justify-content:center;padding:18px;transition:opacity .6s;overflow:auto}
+  .porta::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(0,0,0,.35) 46px 52px);opacity:.5;pointer-events:none}
+  .porta.sai{opacity:0;pointer-events:none}
+  .porta-cena{position:relative;width:100%;max-width:410px}
+  .porta-caixa{position:relative;background:var(--papel);color:var(--tinta);border-radius:6px;padding:30px 22px 22px;text-align:left;box-shadow:0 30px 60px -20px #000;transform:rotate(-.6deg);animation:entraFicha .7s cubic-bezier(.2,.9,.3,1.15) both;transition:transform .5s,opacity .5s}
+  .porta-caixa.some{opacity:0;transform:translateY(-30px) rotate(-4deg);pointer-events:none}
+  @keyframes entraFicha{from{opacity:0;transform:translateY(40px) rotate(4deg)}}
+  .porta-carimbo{position:absolute;top:16px;right:14px;border:3px solid var(--vermelho);color:var(--vermelho);font-family:"Courier Prime",monospace;font-weight:700;font-size:13px;letter-spacing:.16em;padding:3px 8px;transform:rotate(9deg);opacity:.85;animation:carimba .5s .6s cubic-bezier(.3,1.6,.5,1) both}
+  @keyframes carimba{from{opacity:0;transform:rotate(9deg) scale(2.4)}}
+  .porta-k{display:block;padding-right:96px;font-family:"Courier Prime",monospace;font-size:11px;letter-spacing:.18em;color:#8a7d6a}
+  .porta h1{font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:42px;line-height:.95;margin:8px 0 10px;padding-right:70px}
+  .porta p{font-size:15.5px;color:#4d4337;margin:0 0 16px;line-height:1.45}
+  .porta-lbl{display:block;font-family:"Courier Prime",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8a7d6a;margin-bottom:6px}
+  .porta input{width:100%;box-sizing:border-box;font-size:17px;padding:14px;border:0;border-bottom:2px dashed #b9ab88;background:#f7f0df;outline:none;border-radius:6px 6px 0 0;font-family:"Courier Prime",monospace}
+  .porta input:focus{border-bottom-color:var(--vermelho);background:#fffaf0}
+  .porta button{width:100%;margin-top:14px;background:var(--vermelho);color:#fff;border:0;border-radius:999px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 22px -10px rgba(192,40,31,.9)}
+  .porta button:active{transform:scale(.98)}
+  .porta-msg{min-height:20px;margin-top:10px;font-size:14px;color:var(--vermelho);font-weight:600}
+  .porta small{display:block;color:#8a7d6a;font-size:12.5px;margin-top:4px}
+  .porta-caixa.treme{animation:tremePorta .4s}
+  @keyframes tremePorta{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+  .scan,.cracha{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);opacity:0;pointer-events:none;transition:opacity .4s;text-align:center}
+  .scan.on,.cracha.on{opacity:1}
+  .digital{width:110px;color:#9fd3b4;filter:drop-shadow(0 0 10px rgba(159,211,180,.5))}
+  .laser{fill:#9fd3b4;animation:laser 1s ease-in-out infinite alternate}
+  @keyframes laser{to{transform:translateY(96px)}}
+  .scan-linha{font-family:"Courier Prime",monospace;color:#9fd3b4;letter-spacing:.1em;margin-top:14px;min-height:1.4em}
+  .cracha{max-width:330px;margin:0 auto;background:#f4ecd8;color:var(--tinta);border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -18px #000}
+  .cracha.on{animation:crachaEntra .6s cubic-bezier(.2,.9,.3,1.25) both}
+  @keyframes crachaEntra{from{transform:translateY(-50%) scale(.6) rotate(-8deg)}to{transform:translateY(-50%) rotate(-2deg)}}
+  .cracha-topo{background:var(--tinta);color:var(--dourado);font-family:"Courier Prime",monospace;font-size:11px;letter-spacing:.14em;padding:9px}
+  .cracha-corpo{display:flex;gap:14px;align-items:center;padding:18px 18px 46px;text-align:left}
+  .cracha-foto{width:64px;height:76px;border-radius:6px;background:#d9cba8;display:grid;place-items:center;font-size:38px;flex:none}
+  .cracha-corpo small{display:block;font-size:12px;color:#8a7d6a;font-family:"Courier Prime",monospace}
+  .cracha-corpo b{display:block;text-transform:capitalize;font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:28px;line-height:1;margin:2px 0 4px;word-break:break-all}
+  .cracha-ok{position:absolute;right:12px;bottom:12px;border:3px solid #2f7a4e;color:#2f7a4e;font-family:"Courier Prime",monospace;font-weight:700;letter-spacing:.14em;padding:2px 8px;transform:rotate(-10deg) scale(2.5);opacity:0;transition:all .35s cubic-bezier(.3,1.6,.5,1)}
+  .cracha-ok.on{opacity:1;transform:rotate(-10deg) scale(1)}
+  /* casos travados (upsell) */
+  .caso.travado .pasta{filter:grayscale(.55) brightness(.75)}
+  .caso.travado .pasta:hover{filter:grayscale(.2) brightness(.9)}
+  .caso.travado .corrente{position:absolute;left:-6%;right:-6%;top:46%;height:14px;z-index:4;transform:rotate(-12deg);background:repeating-linear-gradient(90deg,#b8b0a0 0 14px,#6f675b 14px 18px);border-radius:7px;box-shadow:0 3px 6px rgba(0,0,0,.5)}
+  .caso.travado .cadeado{z-index:5;animation:balanca 2.4s ease-in-out infinite}
+  @keyframes balanca{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+  .bt.lib{background:var(--vermelho);color:#fff}
+  .bt.lib:hover{filter:brightness(1.1)}
+  .up-k{font-family:"Courier Prime",monospace;font-size:12px;letter-spacing:.14em;color:var(--vermelho)}
+</style>
+</head>
+<body>
+<div class="porta" id="porta">
+  <div class="porta-cena">
+    <form class="porta-caixa" id="portaForm" novalidate>
+      <span class="porta-carimbo">RESTRITO</span>
+      <span class="porta-k">DELEGACIA DE CASOS ARQUIVADOS</span>
+      <h1>Opa. Aqui só entra detetive.</h1>
+      <p>Os arquivos estão logo atrás dessa porta. Mostra sua credencial: o <b>e-mail</b> ou o <b>WhatsApp</b> que você usou na compra.</p>
+      <label class="porta-lbl" for="portaCampo">Sua credencial</label>
+      <input id="portaCampo" autocomplete="email" placeholder="e-mail ou WhatsApp com DDD">
+      <button type="submit"><span class="dig-ic" aria-hidden="true">☝️</span> Colocar a digital e entrar</button>
+      <div class="porta-msg" id="portaMsg" role="status"></div>
+      <small>Travou aqui? Responde o e-mail da compra que a gente te ajuda.</small>
+    </form>
+    <div class="scan" id="scan" aria-live="polite">
+      <svg class="digital" viewBox="0 0 100 120" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+        <path d="M30 95c-8-14-10-30-4-44 7-16 30-22 44-8 9 9 10 22 7 36"/><path d="M40 100c-6-12-8-26-3-38 5-11 20-14 28-5 6 7 5 17 3 27"/>
+        <path d="M50 104c-4-10-6-22-3-32 2-6 10-7 13-2 3 5 2 14 0 22"/><path d="M22 80c-3-14-1-28 8-38"/><path d="M80 40c5 8 6 18 5 28"/>
+        <path d="M60 108c3-8 5-18 5-28"/><path d="M36 20c14-7 30-5 42 5"/></g><rect class="laser" x="8" y="10" width="84" height="4" rx="2"/></svg>
+      <div class="scan-linha" id="scanLinha"></div>
+    </div>
+    <div class="cracha" id="cracha">
+      <div class="cracha-topo">ARQUIVO CONFIDENCIAL · CREDENCIAL</div>
+      <div class="cracha-corpo">
+        <div class="cracha-foto">🕵️</div>
+        <div><small>Detetive</small><b id="crachaNome">Investigador(a)</b><small>Nº <span id="crachaNum">0000</span> · nível: novato</small></div>
+      </div>
+      <div class="cracha-ok" id="crachaOk">LIBERADO</div>
+    </div>
+  </div>
+</div>
+<div class="intro" id="intro" aria-hidden="true"><div class="linha" id="introLinha"></div><div class="ok" id="introOk">ACESSO <em>AUTORIZADO</em></div><button class="pular" id="pular">pular</button></div>
+
+<div class="topo"><div class="wrap">
+  <span class="marca maq">Arquivo Confidencial</span>
+  <span class="plano" id="nomePlano"></span>
+</div></div>
+
+<main class="wrap">
+  <section class="boas">
+    <span class="tag-area"><i></i>Área de membros · acesso liberado</span>
+    <h1 id="saudacao">Olá, detetive.</h1>
+    <p>Aqui é a sua sala de arquivos: tudo o que você comprou fica nesta página. Cada pasta é um caso. Abra, imprima ou leia no celular, e volte aqui quando souber quem foi.</p>
+  </section>
+
+  <section class="mesa-hoje">
+    <h2>Quantos detetives vão jogar hoje?</h2>
+    <p class="sub">Escolha e a gente monta a mesa pra vocês.</p>
+    <div class="linha-mesa">
+      <div class="qtd" id="qtd"></div>
+    </div>
+    <div class="plano-mesa" id="planoMesa"></div>
+    <p class="tranq">Jogar com menos gente não atrapalha: o caso é o mesmo, só muda o ritmo. Sozinho vira um quebra-cabeça; em grupo vira debate. Cada caso leva até 60 minutos.</p>
+  </section>
+
+  <section class="comece">
+    <!-- VÍDEO: troque o bloco .ph por um iframe do YouTube (não listado) ou do Vimeo -->
+    <div class="video"><div class="ph"><b>▶</b>Vídeo de 1 minuto: como jogar</div></div>
+    <div class="passos-c">
+      <h2>Comece aqui</h2>
+      <ol>
+        <li>Abra a pasta do caso e imprima a <b>Parte 1</b> e as <b>Fichas</b>.</li>
+        <li>Espalhem tudo na mesa e leiam com calma.</li>
+        <li>Cada um anota na ficha quem é o seu suspeito.</li>
+        <li>Só então imprimam a <b>Parte 2</b>. Ela muda tudo.</li>
+        <li>Travaram? Usem as <b>Dicas</b>, uma de cada vez.</li>
+        <li>Acusem e voltem aqui para abrir a solução.</li>
+      </ol>
+      <div class="regra"><b>Regra de ouro:</b> a solução só abre com o nome do culpado. Errou? Ela continua trancada.</div>
+      <a class="link-manual" id="linkManual" href="#" target="_blank" rel="noopener">📄 Baixar o manual completo</a>
+    </div>
+  </section>
+
+  <div class="sec-t"><h2>Seus casos</h2><div class="progresso"><span id="contCasos"></span><div class="barra"><i id="barra"></i></div></div></div>
+  <section class="pastas" id="pastas"></section>
+
+  <div id="blocoBonus">
+    <div class="sec-t"><h2>Bônus</h2><span>do Arquivo Completo</span></div>
+    <section class="bonus" id="bonus"></section>
+  </div>
+
+  <div id="blocoUpgrade"></div>
+</main>
+
+<footer>Todos os casos, pessoas e lugares são fictícios. · Dúvidas? Responda o e-mail de compra.</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTit">
+  <div class="caixa" id="caixa">
+    <button class="fechar" id="fechar" aria-label="Fechar">×</button>
+    <span class="k maq" id="mArq"></span>
+    <h3 id="mTit"></h3>
+    <div id="mCorpo"></div>
+  </div>
+</div>
+
+<script>
+/* ================= CONFIGURAÇÃO (gerada para cada plano) ================= */
+const CONFIG = {
+ "plano": "Arquivo Completo",
+ "manual": "#",
+ "casos": [
+  {
+   "num": "001",
+   "titulo": "O Bolão Premiado",
+   "meta": "Ano todo · médio · até 50 min",
+   "cor": "#4f8a68",
+   "drive": "https://drive.google.com/drive/folders/19i0wcQ8BladGTzd8Mpv3S9R63DJXmiTr",
+   "sol": [
+    "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"
+   ]
+  },
+  {
+   "num": "002",
+   "titulo": "O Último Story",
+   "meta": "Ano todo · difícil · até 60 min",
+   "cor": "#7a4a52",
+   "drive": "https://drive.google.com/drive/folders/1xyzDkOj-fdwkBzsaprI8xK0isMM1Kqa2",
+   "sol": [
+    "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"
+   ]
+  },
+  {
+   "num": "ESPECIAL",
+   "titulo": "🎁 O Sumiço na Ceia",
+   "meta": "Bônus de Natal · médio · até 50 min",
+   "cor": "#b5463a",
+   "drive": "https://drive.google.com/drive/folders/18qCCv8wRbQJqAVb6UATKNtzjFvFPKvPk",
+   "sol": [
+    "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"
+   ]
+  }
+ ],
+ "bonus": [
+  {
+   "ic": "✉️",
+   "titulo": "Convite pro grupo",
+   "desc": "Imagem pro WhatsApp, convites pra imprimir e a mensagem pronta.",
+   "link": "https://drive.google.com/file/d/1ISE9BeqYDZisnPKsHghpvxOPLroFnGXr/view"
+  },
+  {
+   "ic": "🏅",
+   "titulo": "Certificado de Detetive",
+   "desc": "Pra imprimir e entregar pra quem acertar o culpado.",
+   "link": "https://drive.google.com/file/d/1pCzGeiz-9wXcS9wOMkdMXruuk05xmZHs/view"
+  },
+  {
+   "ic": "🃏",
+   "titulo": "Cartões de Acusação + Placar",
+   "desc": "Todo mundo acusa em segredo e revela junto. O placar diz quem é o melhor detetive da casa.",
+   "link": "https://drive.google.com/file/d/1Ks2RKCq_fn0f8oVNLThu--GlyARC40lc/view"
+  }
+ ],
+ "upgrade": ""
+};
+/* ======================================================================== */
+
+(function(){
+  "use strict";
+  const $ = id => document.getElementById(id);
+  $('nomePlano').textContent = CONFIG.plano;
+  $('linkManual').href = CONFIG.manual;
+
+  let resolvidos = {};
+  try { resolvidos = JSON.parse(localStorage.getItem('ac_resolvidos') || '{}'); } catch (e) {}
+
+
+  // ---------- Abertura "acesso autorizado" (só na primeira visita) ----------
+  function iniciaIntro(){
+    const intro = $('intro');
+    let visto = false; try { visto = localStorage.getItem('ac_intro') === '1'; } catch (e) {}
+    if (visto || matchMedia('(prefers-reduced-motion: reduce)').matches) { intro.remove(); return; }
+    const linhas = ['> verificando credencial...', '> abrindo sala de arquivos...', '> ' + CONFIG.casos.length + ' casos encontrados'];
+    let li = 0, ci = 0, fim = false;
+    const alvo = $('introLinha');
+    function sai(){ if (fim) return; fim = true; intro.classList.add('sai'); setTimeout(() => intro.remove(), 650); try { localStorage.setItem('ac_intro', '1'); } catch (e) {} }
+    $('pular').addEventListener('click', sai);
+    (function digita(){
+      if (fim) return;
+      if (li < linhas.length) {
+        if (ci <= linhas[li].length) { alvo.textContent = linhas[li].slice(0, ci++); setTimeout(digita, 20); }
+        else { li++; ci = 0; setTimeout(digita, 180); }
+      } else { $('introOk').classList.add('on'); setTimeout(sai, 900); }
+    })();
+  }
+
+  // ---------- Porta: credencial (e-mail ou WhatsApp) -> digital -> crachá ----------
+  (function(){
+    const porta = $('porta');
+    let login = ''; try { login = localStorage.getItem('ac_login') || ''; } catch (e) {}
+    if (login) { porta.remove(); iniciaIntro(); return; }
+    try { localStorage.setItem('ac_intro', '1'); } catch (e) {}
+    const intro = $('intro'); if (intro) intro.remove();
+    const campo = $('portaCampo'), msg = $('portaMsg'), caixa = $('portaForm');
+    const erros = ['Hmm, isso não parece uma credencial. Confere o e-mail ou o WhatsApp com DDD.',
+                   'Ainda não bateu. Se for WhatsApp, coloca o DDD. Se for e-mail, confere o @.'];
+    let tent = 0;
+    caixa.addEventListener('submit', ev => {
+      ev.preventDefault();
+      const v = campo.value.trim(), dig = v.replace(/\D/g, '');
+      const email = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+      const fone = !/[a-z@]/i.test(v) && (dig.length === 10 || dig.length === 11 || ((dig.length === 12 || dig.length === 13) && dig.startsWith('55')));
+      if (!email && !fone) {
+        msg.textContent = v ? erros[Math.min(tent++, 1)] : 'Sem credencial, sem arquivo. Digita aí 😉';
+        caixa.classList.remove('treme'); void caixa.offsetWidth; caixa.classList.add('treme'); return;
+      }
+      const chave = email ? v.toLowerCase() : dig;
+      try { localStorage.setItem('ac_login', chave); } catch (e) {}
+      let n = 0; for (const ch of chave) n = (n * 31 + ch.charCodeAt(0)) % 9000;
+      $('crachaNum').textContent = String(n + 1000);
+      $('crachaNome').textContent = email ? v.split('@')[0].replace(/[._\d]+/g, ' ').trim().split(' ')[0] || 'Investigador(a)' : 'Investigador(a)';
+      caixa.classList.add('some');
+      const scan = $('scan'), linha = $('scanLinha'); scan.classList.add('on');
+      const passos = ['> lendo digital...', '> conferindo credencial...', '> credencial encontrada'];
+      passos.forEach((t, k) => setTimeout(() => linha.textContent = t, k * 650));
+      setTimeout(() => {
+        scan.classList.remove('on'); $('cracha').classList.add('on');
+        setTimeout(() => $('crachaOk').classList.add('on'), 450);
+        setTimeout(() => { porta.classList.add('sai'); setTimeout(() => porta.remove(), 650); }, 2100);
+      }, 2000);
+    });
+    $('pular') && $('pular').remove();
+  })();
+
+  // ---------- Mesa de hoje ----------
+  const dicas = {
+    1: [['🧩','Modo solo','Leia tudo na ordem e anote cada contradição na ficha. É um quebra-cabeça só seu.'],
+        ['🖨️','Imprima','Parte 1, Parte 2 e 1 Ficha do Detetive.'],
+        ['⏱️','Tempo','Uns 40 a 60 minutos. Faça uma pausa antes de abrir a Parte 2.']],
+    2: [['🤝','Modo dupla','Leiam juntos ou cada um metade dos papéis, depois troquem.'],
+        ['🖨️','Imprima','Parte 1, Parte 2 e 2 Fichas do Detetive.'],
+        ['🏁','Desafio','Cada um escreve o suspeito antes de abrir a Parte 2. Quem acertar escolhe a sobremesa.']],
+    3: [['🗂️','Dividam as provas','Cada um fica com uma parte dos papéis e apresenta o que achou.'],
+        ['🖨️','Imprima','Parte 1, Parte 2 e 3 Fichas do Detetive.'],
+        ['⚖️','Equipe ou disputa','Juntos numa acusação só, ou cada um escreve a sua em segredo.']],
+    4: [['🗂️','Dividam as provas','Cada um fica com uma parte dos papéis e apresenta o que achou.'],
+        ['🖨️','Imprima','Parte 1, Parte 2 e 4 Fichas do Detetive.'],
+        ['⚖️','Modo disputa','Cada um acusa em segredo e revelam juntos. Quem errar, lava a louça.']],
+    5: [['👥','Duas equipes','Separem em 2 times. Se der, imprimam uma cópia da Parte 1 por time.'],
+        ['🖨️','Imprima','2 cópias da Parte 1, 1 da Parte 2 e 5 Fichas do Detetive.'],
+        ['🏆','Time contra time','Cada time entrega uma acusação. O time que acertar ganha.']],
+    6: [['👥','Duas equipes','Separem em 2 times de 3. Uma cópia da Parte 1 por time.'],
+        ['🖨️','Imprima','2 cópias da Parte 1, 1 da Parte 2 e 6 Fichas do Detetive.'],
+        ['🏆','Time contra time','Cada time entrega uma acusação. O time que acertar ganha.']],
+    7: [['👨‍👩‍👧‍👦','Família grande','Separem em times de 3 ou 4 pessoas. Tios contra primos contra avós funciona muito bem.'],
+        ['🖨️','Imprima','Uma cópia da Parte 1 por time, 1 da Parte 2 e uma Ficha do Detetive por time.'],
+        ['🏆','Corrida de times','Cada time entrega a acusação num papel dobrado. Revelem todos juntos.']]
+  };
+  let qtd = 0;
+  try { qtd = +localStorage.getItem('ac_qtd') || 0; } catch (e) {}
+  function atualizaMesa(){
+    $('saudacao').textContent = qtd > 1 ? 'Olá, detetives.' : 'Olá, detetive.';
+    $('qtd').querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.n === qtd));
+    $('planoMesa').innerHTML = qtd ? dicas[qtd].map(([ic, t, d]) => '<div class="pm"><span class="ic">' + ic + '</span><b>' + t + '</b><p>' + d + '</p></div>').join('') : '';
+  }
+  $('qtd').innerHTML = [1,2,3,4,5,6,7].map(n => '<button data-n="' + n + '" aria-label="' + (n === 7 ? '7 ou mais jogadores' : n + (n === 1 ? ' jogador' : ' jogadores')) + '">' + (n === 7 ? '7+' : n) + '<small>' + (n === 1 ? 'SOLO' : n === 7 ? 'TIMES' : 'PESSOAS') + '</small></button>').join('');
+  $('qtd').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    qtd = +b.dataset.n; try { localStorage.setItem('ac_qtd', qtd); } catch (er) {}
+    atualizaMesa();
+  });
+  atualizaMesa();
+
+  // ---------- Progresso ----------
+  function atualizaProgresso(){
+    const total = CONFIG.casos.length, feitos = CONFIG.casos.filter(c => resolvidos[c.num]).length;
+    $('contCasos').textContent = feitos + ' de ' + total + ' resolvidos';
+    $('barra').style.width = (total ? feitos / total * 100 : 0) + '%';
+  }
+
+  // ---------- Pastas ----------
+  const cont = $('pastas');
+  CONFIG.casos.forEach((c, i) => {
+    const pronto = !!c.drive;
+    const el = document.createElement('div');
+    el.className = 'caso'; el.style.animationDelay = (0.12 * i + 0.1) + 's';
+    el.innerHTML =
+      '<a class="pasta' + (pronto ? '' : ' bloq') + '" ' + (pronto ? 'href="' + c.drive + '" target="_blank" rel="noopener"' : 'aria-disabled="true"') + ' style="--cor:' + c.cor + '" aria-label="Abrir pasta do caso ' + c.titulo + '">' +
+        '<span class="fundo"></span><span class="folhas"></span>' +
+        '<span class="frente"><span class="etq"><b>ARQUIVO ' + c.num + '</b>' + c.titulo + '</span></span>' +
+        '<span class="carimbo">CONFIDENCIAL</span>' + (pronto ? '' : '<span class="cadeado">🔒</span>') +
+      '</a>' +
+      '<div><h3>' + c.titulo + '</h3><div class="meta">' + c.meta + '</div></div>' +
+      '<div class="bts">' +
+        '<a class="bt pr' + (pronto ? '' : ' dis') + '" ' + (pronto ? 'href="' + c.drive + '" target="_blank" rel="noopener"' : '') + '>📂 ' + (pronto ? 'Abrir pasta' : 'Em breve') + '</a>' +
+        '<button class="bt sol' + (c.sol && c.sol.length ? '' : ' dis') + (resolvidos[c.num] ? ' resolvido' : '') + '" data-i="' + i + '">' + (resolvidos[c.num] ? '✔ Resolvido' : '🔒 Abrir solução') + '</button>' +
+      '</div>';
+    cont.appendChild(el);
+  });
+
+  // ---------- Casos travados (upsell dentro da área: só no plano básico) ----------
+  (CONFIG.travados || []).forEach((c, k) => {
+    const el = document.createElement('div');
+    el.className = 'caso travado'; el.style.animationDelay = (0.12 * (CONFIG.casos.length + k) + 0.1) + 's';
+    el.innerHTML =
+      '<a class="pasta" href="' + CONFIG.upgrade + '" target="_blank" rel="noopener" style="--cor:' + c.cor + '" aria-label="Liberar o caso ' + c.titulo + '">' +
+        '<span class="fundo"></span><span class="folhas"></span>' +
+        '<span class="frente"><span class="etq"><b>ARQUIVO ' + c.num + '</b>' + c.titulo + '</span></span>' +
+        '<span class="corrente"></span><span class="cadeado">🔒</span>' +
+      '</a>' +
+      '<div><h3>' + c.titulo + '</h3><div class="meta">' + c.meta + '</div></div>' +
+      '<div class="bts"><a class="bt lib" href="' + CONFIG.upgrade + '" target="_blank" rel="noopener">🔓 Liberar caso</a></div>';
+    cont.appendChild(el);
+  });
+
+  atualizaProgresso();
+
+  // ---------- Bônus ----------
+  if (CONFIG.bonus && CONFIG.bonus.length) {
+    $('bonus').innerHTML = CONFIG.bonus.map(b =>
+      '<div class="bn"><span class="ic">' + b.ic + '</span><h3>' + b.titulo + '</h3><p>' + b.desc + '</p>' +
+      '<a class="bt pr' + (b.link ? '' : ' dis') + '" ' + (b.link ? 'href="' + b.link + '" target="_blank" rel="noopener"' : '') + '>' + (b.link ? 'Abrir' : 'Em breve') + '</a></div>').join('');
+  } else { $('blocoBonus').remove(); }
+
+  if (CONFIG.upgrade) {
+    $('blocoUpgrade').innerHTML = '<div class="upgrade"><div><span class="up-k">🔒 2 ARQUIVOS TRANCADOS</span><h3>Libera os casos que faltam</h3><p>O Último Story e o caso especial de Natal, mais convite, certificado e cartões de acusação. Tudo por <b>R$ 19,90</b>, uma vez só. Pagou, o acesso completo chega no seu e-mail e WhatsApp.</p></div><a href="' + CONFIG.upgrade + '" target="_blank" rel="noopener">Liberar por R$ 19,90 →</a></div>';
+  }
+
+  // ---------- Solução trancada ----------
+  function norm(t){ return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, ''); }
+  function abre(cifrado, chave){
+    try {
+      const k = new TextEncoder().encode(chave);
+      if (!k.length) return null;
+      const b = Uint8Array.from(atob(cifrado), ch => ch.charCodeAt(0));
+      const out = b.map((x, i) => x ^ k[i % k.length]);
+      const txt = new TextDecoder('utf-8', {fatal: true}).decode(out);
+      return txt.startsWith('OK|') ? txt.slice(3) : null;
+    } catch (e) { return null; }
+  }
+
+  const modal = $('modal'), corpo = $('mCorpo');
+  let ultimoFoco = null;
+  function fecha(){ modal.classList.remove('on'); if (ultimoFoco) ultimoFoco.focus(); }
+  $('fechar').addEventListener('click', fecha);
+  modal.addEventListener('click', e => { if (e.target === modal) fecha(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fecha(); });
+
+  function mostraSolucao(c, html, btn){
+    corpo.innerHTML = '<div class="solucao"><span class="selo">CASO ENCERRADO</span>' + html + '</div>';
+    resolvidos[c.num] = true;
+    try { localStorage.setItem('ac_resolvidos', JSON.stringify(resolvidos)); } catch (e) {}
+    if (btn) { btn.classList.add('resolvido'); btn.textContent = '✔ Resolvido'; }
+    atualizaProgresso();
+  }
+
+  cont.addEventListener('click', e => {
+    const btn = e.target.closest('.bt.sol');
+    if (!btn) return;
+    const c = CONFIG.casos[+btn.dataset.i];
+    ultimoFoco = btn;
+    $('mArq').textContent = 'Arquivo ' + c.num;
+    $('mTit').textContent = c.titulo;
+    corpo.innerHTML =
+      '<p class="inst">Quem é o culpado? Digite só o primeiro nome. Se estiver certo, a solução abre.</p>' +
+      '<form class="campo" id="form"><input id="palpite" autocomplete="off" placeholder="nome do culpado" aria-label="Nome do culpado"><button>Abrir</button></form>' +
+      '<div class="msg" id="msg" role="status"></div>' +
+      '<p class="desisti">Desistiram? A senha de quem desistiu está na última página do arquivo de Dicas.</p>';
+    modal.classList.add('on');
+    setTimeout(() => $('palpite').focus(), 50);
+    $('form').addEventListener('submit', ev => {
+      ev.preventDefault();
+      const chave = norm($('palpite').value);
+      let html = null;
+      for (const s of c.sol) { html = abre(s, chave); if (html) break; }
+      if (html) { mostraSolucao(c, html, btn); }
+      else {
+        const m = $('msg'); m.className = 'msg erro';
+        m.textContent = chave ? 'Trancado. Não foi essa pessoa. Revisem as provas.' : 'Digite um nome.';
+        const cx = $('caixa'); cx.classList.remove('tremer'); void cx.offsetWidth; cx.classList.add('tremer');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
